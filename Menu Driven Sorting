@@ -1,0 +1,194 @@
+
+// Name : ARYA SANKAR RAM TS
+// Regd_No: 24BCE10895
+
+
+#include <iostream>
+using namespace std;
+
+// -------------------- Bubble Sort --------------------
+void BubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Here the outer loop runs and the inner loop compares it with the next element to the inner loop that is j+1;
+                
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+// -------------------- Selection Sort --------------------
+void SelectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int min = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[min]) {
+                // In this after each loop find the smallest element and compare it with the minimum if it's lesser swap after loop after storing j in minimum.
+                min = j;
+            }
+        }
+        swap(arr[i], arr[min]);
+    }
+}
+
+// -------------------- Insertion Sort --------------------
+void InsertionSort(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        int current = arr[i]; // Here we can consider j as previous element and do
+        int j = i - 1;
+
+        while (j >= 0 && arr[j] > current) {
+            arr[j + 1] = arr[j];
+            // Here in current variable the element at i is stored and the previous is j, if j is greater then store it in next index next to j and j must be less than or equal to 0;
+            j--;
+        } // decrease the j
+
+        arr[j + 1] = current;
+    } // now after the loop store current in j+1;
+}
+
+// -------------------- Merge Function --------------------
+void Merge(int arr[], int low, int mid, int high) {
+    int i = low;                // initialise value of i as starting index low.
+    int j = mid + 1;            // j should start from an index after the mid value
+    int k = 0;                  // initialise a variable k as 0 for the index of temporary array
+
+    int temp[high - low + 1];
+
+    while (i <= mid && j <= high) { // i should be less than high and j must be less than high
+        if (arr[i] <= arr[j]) {
+            // Every time there is an element on left subarray which is less than value on right index add them in left side of temporary array by k++;
+            temp[k++] = arr[i++];
+        } else {
+            temp[k++] = arr[j++]; // The opposite happens here.
+        }
+    }
+
+    while (i <= mid) {
+        temp[k++] = arr[i++];
+    } // Add all remaining elements on left and right to the array
+
+    while (j <= high) {
+        temp[k++] = arr[j++];
+    }
+
+    for (int i = low, k = 0; i <= high; i++, k++) {
+        arr[i] = temp[k];
+    }
+}
+
+// -------------------- Merge Sort --------------------
+void MergeSort(int arr[], int low, int high) {
+    // Here the merge sort function is called under base condition that the index low must be smaller than high
+    if (low < high) {
+        int mid = (high + low) / 2;
+        MergeSort(arr, low, mid);
+        MergeSort(arr, mid + 1, high);
+        Merge(arr, low, mid, high);
+    }
+}
+
+// -------------------- Partition Function for Quick Sort --------------------
+int Partition(int arr[], int low, int high) {
+    int pivot = arr[low];
+    int i = low + 1; // Low is the first index so pivot is initialised as first element.
+    int j = high;    // The comparing starts from an index after low.
+
+    while (i <= j) {
+        while (i <= high && arr[i] <= pivot)
+            // i should never be greater than j and the whole loop goes under that condition.
+            // Now increase i after every comparison and the loop must go until it finds an element greater than pivot
+            i++;
+
+        while (j >= low && arr[j] > pivot)
+            // Same will happen here but from the end and the loop runs until it finds an element from end that is lesser than i
+            j--;
+
+        if (i < j) {
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[low], arr[j]);
+    return j;
+}
+
+// -------------------- Recursive QuickSort --------------------
+void Qs(int arr[], int low, int high) {
+    // Partition will return j index and it is further used to sort the remaining part of the hypothetical array.
+    if (low < high) {
+        int partition = Partition(arr, low, high);
+        Qs(arr, low, partition - 1);
+        Qs(arr, partition + 1, high);
+    }
+}
+
+// -------------------- QuickSort Wrapper --------------------
+void QuickSort(int arr[], int n) {
+    Qs(arr, 0, n - 1);
+}
+
+// -------------------- Utility Function --------------------
+void displayArray(int array[], int size) {
+    for (int i = 0; i < size; ++i)
+        cout << array[i] << " ";
+    cout << endl;
+}
+
+// -------------------- Main Menu (unchanged) --------------------
+int main() {
+    int originalArray[100], numberOfElements, userChoice;
+
+    cout << "Enter number of elements: ";
+    cin >> numberOfElements;
+
+    cout << "Enter array elements:" << endl;
+    for (int i = 0; i < numberOfElements; ++i)
+        cin >> originalArray[i];
+
+    do {
+        cout << endl << "--- Sorting Menu ---" << endl;
+        cout << "1. Bubble Sort" << endl;
+        cout << "2. Merge Sort" << endl;
+        cout << "3. Quick Sort" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> userChoice;
+
+        int arrayToSort[100];
+        for (int i = 0; i < numberOfElements; ++i)
+            arrayToSort[i] = originalArray[i];
+
+        switch (userChoice) {
+            case 1:
+                BubbleSort(arrayToSort, numberOfElements);
+                cout << "Sorted array using Bubble Sort:" << endl;
+                displayArray(arrayToSort, numberOfElements);
+                break;
+
+            case 2:
+                MergeSort(arrayToSort, 0, numberOfElements - 1);
+                cout << "Sorted array using Merge Sort:" << endl;
+                displayArray(arrayToSort, numberOfElements);
+                break;
+
+            case 3:
+                QuickSort(arrayToSort, numberOfElements);
+                cout << "Sorted array using Quick Sort:" << endl;
+                displayArray(arrayToSort, numberOfElements);
+                break;
+
+            case 4:
+                cout << "Exiting program..." << endl;
+                break;
+
+            default:
+                cout << "Invalid choice! Please try again." << endl;
+        }
+
+    } while (userChoice != 4);
+
+    return 0;
+}
