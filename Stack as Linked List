@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+#include <iostream>
+#include <utility>
+using namespace std;
+
+struct Node{
+
+    int data;
+    Node* next;
+
+    Node(int val){
+        data = val;
+        next = NULL;
+    }
+
+};
+
+
+Node* top = NULL;
+
+void Push(int val){
+    Node* newNode = new Node(val);
+    newNode->data = val;
+    newNode->next = top;
+    top = newNode;
+
+    
+}
+
+
+void display(){
+    if(top == NULL){
+        cout<<"Stack is empty";
+        return;
+    }
+    Node* temp = top;
+    while(temp != NULL){
+        
+        cout<<temp->data<<" ";
+        temp = temp->next;
+
+    }
+    
+}
+
+
+void Peek(){
+        if(top == NULL){
+            cout<<"Stack is empty"<<endl;
+            return;
+        }
+
+       cout<<top->data<<endl;
+    }
+
+
+void Pop(){
+    if(top == NULL){
+        cout<<"Nothing to remove"<<endl;
+        return;
+    }
+    Node* temp = top;
+    top = top->next;
+    delete temp;
+}
+
+
+int main(){
+
+    int n;
+    cout<<"Enter n: ";
+    cin>> n;
+   
+    vector <int> arr(n);
+    cout<<"Enter array: ";
+    for(int i = 0; i<n; i++){
+        cin>>arr[i];
+        Push(arr[i]);
+        
+        
+    }
+
+   
+    Peek();
+     Pop();
+    display();
+
+    
+    
+    return 0;
+}
