@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int MAX;
+int* queue;
+int front = -1;
+int rear = -1;
+
+
+void Enqueue(int value){
+    if(rear == MAX-1){
+        printf("Queue filled\n");
+    }
+
+    if(front == -1){
+        front = 0;
+    }
+    queue[++rear] = value;
+    printf("Value added\n");
+    return;
+}
+
+
+void Dequeue(){
+    if(front == -1 || front > rear){
+        printf("Nothing in queue\n");
+        return;
+    }
+
+    front++;
+
+
+}
+
+void display(){
+    if(front == -1 || front> rear){
+        printf("Queue is empty\n");
+    }
+
+    printf("Queue elements are: ");
+    for(int i = front; i<= rear; i++){
+        printf("%d ",queue[i]);
+    }
+
+    printf("\n");
+}
+
+int main(){
+
+    int value, choice;
+
+    printf("Enter size of queue: ");
+    scanf("%d", &MAX);
+
+    queue = (int*)malloc(MAX*sizeof(int));
+    if(queue == NULL){
+        printf("Allocation Failed");
+        return 1;
+    }
+
+
+    while(1){
+        printf("1. Enqueue\n");
+        printf("2. Dequeue\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d",&choice);
+
+
+        switch(choice){
+            case 1:
+            printf("Enter the value: ");
+            scanf("%d",&value);
+            Enqueue(value);
+            break;
+
+
+            case 2:
+            Dequeue();
+            break;
+
+            case 3:
+            display();
+            break;
+
+
+            case 4:
+            printf("Exiting...");
+            exit(0);
+
+            default:
+            printf("Invalid");
+
+        }
+    }
+    return 0;
+}
