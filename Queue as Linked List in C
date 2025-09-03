@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+struct Node{
+    int data;
+    struct Node* next;
+
+};
+
+struct Queue{
+    struct Node* front;
+    struct Node* rear;
+   
+
+};
+
+
+struct Queue* createQueue(){
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->rear = q->front = NULL;
+    return q;
+}
+
+
+void InsertQueue(struct Queue* q, int value){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if(q->rear == NULL){
+        q->front = q->rear = newNode;
+        return;
+    }
+
+    q->rear->next = newNode;
+    q->rear = newNode;
+
+
+
+}
+
+
+void DeleteQueue(struct Queue* q){
+    if(q->rear == NULL){
+        printf("List is Empty\n");
+        return;
+    }
+    struct Node* temp = q->front;
+    q->front = q->front->next;
+    free(temp);
+    return;
+}
+
+
+void Display(struct Queue* q){
+
+    if(q->rear == NULL){
+        printf("List is Empty\n");
+        return;
+    }
+
+    struct Node* temp = q->front;
+    while(temp != NULL){
+        printf("%d ", temp->data);
+        temp = temp->next;
+        
+    }
+
+    printf("\n");
+
+}
+
+
+
+
+int main(){
+
+    int value, choice;
+    struct Queue* q = createQueue();
+
+    while(1){
+        printf("Insert at Queue Linked-List\n");
+        printf("Delete at Queue Linked-List\n");
+        printf("Display at Queue Linked-List\n");
+        printf("Exit\n");
+        printf("Enter choice: ");
+        scanf("%d",&choice);
+
+
+        switch(choice){
+            case 1:
+            printf("Enter the value: ");
+            scanf("%d",&value);
+            InsertQueue(q,value);
+            break;
+
+
+            case 2:
+            DeleteQueue(q);
+            break;
+
+            case 3:
+            Display(q);
+            break;
+
+            case 4:
+            printf("Exiting...");
+            exit(0);
+
+
+            default:
+            printf("Invalid\n");
+        }
+    }
+
+    return 0;
+
+
+}
