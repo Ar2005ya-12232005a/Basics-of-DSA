@@ -1,0 +1,98 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int MAX;
+int* queue;
+int front = -1;
+int rear = -1;
+
+
+void InsertValue(int value){
+    if((rear+1) % MAX == front){
+        printf("Queue is full\n");
+        return;
+    }
+    if(front == -1){
+        front = rear = 0;
+        queue[rear] = value;
+        return;
+    }
+
+
+    rear = (rear+1) % MAX;
+    queue[rear] = value;
+}
+
+
+
+void DeleteValue(){
+    if(front == -1){
+        printf("Empty\n");
+        return;
+    }
+
+    front = (front+1) % MAX;
+}
+
+
+void DisplayValue(){
+    if(front == -1){
+        printf("List is Empty\n");
+        return;
+    }
+
+    for(int i = front; ; i = (i+1)% MAX){
+        printf("%d", queue[i]);
+        if(i == rear) break;
+
+    }
+
+    printf("\n");
+}
+
+
+
+int main(){
+
+    int value, choice;
+
+    printf("Enter the size of Array: ");
+    scanf("%d", &MAX);
+
+    queue = (int*)malloc(MAX*sizeof(int));
+
+    while(1){
+        printf("Insert Value\n");
+        printf("Delete Value\n");
+        printf("Display Value\n");
+        printf("Exit\n");
+        printf("Enter choice: ");
+        scanf("%d",&choice);
+
+        switch(choice){
+            case 1:
+            printf("Enter the value: ");
+            scanf("%d",&value);
+            InsertValue(value);
+            break;
+
+            case 2:
+            DeleteValue();
+            break;
+
+            case 3:
+            DisplayValue();
+            break;
+
+            case 4:
+            exit(0);
+
+            default:
+            printf("Invalid\n");
+
+        }
+    }
+
+    return 0;
+
+}
