@@ -1,0 +1,228 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* back;
+    struct Node* next;
+
+};
+
+struct Node* start;
+
+
+struct Node* createNode(int value){
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->back = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void InsertAtHead(int value){
+    struct Node* newNode = createNode(value);
+    if(start == NULL){
+        start = newNode;
+        return;
+    }
+    newNode->next = start;
+    start->back = newNode;
+    start = newNode;
+}
+
+
+void InsertAtTail(int value){
+    struct Node* newNode = createNode(value);
+    if(start == NULL){
+        start = newNode;
+        return;
+    }
+    struct Node* temp = start;
+    while(temp->next != NULL){
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+    newNode->back = temp;
+
+}
+
+void DeleteAtHead(){
+    if(start == NULL){
+        printf("Empty\n");
+        return;
+    }
+    struct Node* temp = start;
+    start = start->next;
+    start->back = NULL;
+    free(temp);
+
+
+}
+
+void DeleteAtTail(){
+    if(start == NULL){
+        printf("Empty\n");
+        return;
+    }
+
+    if(start->next == NULL){
+        free(start);
+        start = NULL;
+        return;
+    }
+
+    struct Node* temp = start;
+    while(temp->next->next != NULL){
+        temp = temp->next;
+    }
+
+    struct Node* delNode = temp->next;
+    free(delNode);
+    temp->next = NULL;
+
+
+}
+
+void InsertAtIndex(int index, int value) {
+    if (index <= 0) {
+        printf("Invalid index\n");
+        return;
+    }
+
+    if (index == 1) {
+        InsertAtHead(value);
+        return;
+    }
+
+    struct Node* newNode = createNode(value);
+    struct Node* temp = start;
+    int count = 1;
+
+    while (temp != NULL && count < index - 1) {
+        temp = temp->next;
+        count++;
+    }
+
+    if (temp == NULL) {
+        printf("Index out of range\n");
+        free(newNode);
+        return;
+    }
+
+    newNode->next = temp->next;
+    if (temp->next != NULL) {
+        temp->next->back = newNode;
+    }
+    temp->next = newNode;
+    newNode->back = temp;
+}
+
+
+
+void DeleteAtIndex(int index){
+    if(start == NULL || index <= 0){
+        printf("Nothing in List or Invalid\n");
+        return;
+    }
+
+    if(index == 1){
+        DeleteAtHead();
+        return;
+    }
+
+    int count = 0;
+    struct Node* temp = start;
+    while(temp !=NULL && count < index-1){
+        count++;
+        temp = temp->next;
+    }
+    struct Node* delNode = temp->next;
+    temp->next = delNode->next;
+    delNode->next->back = temp;
+    free(delNode);
+}
+
+
+
+void display(){
+    
+    if(start == NULL){
+        printf("Empty\n");
+    }
+    struct Node* temp = start;
+    while(temp != NULL){
+        printf("%d ",temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+    
+}
+
+
+
+int main() {
+    int choice, value, index;
+
+    while (1) {
+        printf("\n--- MENU ---\n");
+        printf("1. Insert at head\n");
+        printf("2. Insert at tail\n");
+        printf("3. Insert at index\n");
+        printf("4. Delete at head\n");
+        printf("5. Delete at tail\n");
+        printf("6. Delete at index\n");
+        printf("7. Display\n");
+        printf("8. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value: ");
+                scanf("%d", &value);
+                InsertAtHead(value);
+                break;
+
+            case 2:
+                printf("Enter value: ");
+                scanf("%d", &value);
+                InsertAtTail(value);
+                break;
+
+            case 3:
+                printf("Enter index: ");
+                scanf("%d", &index);
+                printf("Enter value: ");
+                scanf("%d", &value);
+                InsertAtIndex(index, value);
+                break;
+
+            case 4:
+                DeleteAtHead();
+                break;
+
+            case 5:
+                DeleteAtTail();
+                break;
+
+            case 6:
+                printf("Enter index: ");
+                scanf("%d", &index);
+                DeleteAtIndex(index);
+                break;
+
+            case 7:
+                display();
+                break;
+
+            case 8:
+                printf("Exiting...\n");
+                exit(0);
+
+            default:
+                printf("Invalid Choice\n");
+        }
+    }
+
+}
